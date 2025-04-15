@@ -1,10 +1,9 @@
 package io.pivotal.intellij.jasmine
 
-import com.google.common.collect.ImmutableList
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.javascript.testFramework.jasmine.JasmineFileStructureBuilder
-import com.intellij.javascript.testing.JsTestRunConfigurationProducer
+import com.intellij.javascript.testing.runConfiguration.JsTestRunConfigurationProducer
 import com.intellij.json.psi.JsonFile
 import com.intellij.lang.javascript.psi.JSFile
 import com.intellij.lang.javascript.psi.JSTestFileType
@@ -17,9 +16,10 @@ import com.intellij.util.ObjectUtils
 import io.pivotal.intellij.jasmine.scope.JasmineScope
 import io.pivotal.intellij.jasmine.util.JasmineUtil
 
-class JasmineRunConfigurationProducer : JsTestRunConfigurationProducer<JasmineRunConfiguration>(ImmutableList.of("jasmine")) {
+class JasmineRunConfigurationProducer : JsTestRunConfigurationProducer<JasmineRunConfiguration>() {
+
     override fun getConfigurationFactory(): ConfigurationFactory {
-        return JasmineConfigurationType.getInstance().configurationFactories.get(0)
+        return JasmineConfigurationType.getInstance().configurationFactories[0]
     }
 
     override fun isConfigurationFromCompatibleContext(runConfig: JasmineRunConfiguration, context: ConfigurationContext): Boolean {
@@ -40,6 +40,10 @@ class JasmineRunConfigurationProducer : JsTestRunConfigurationProducer<JasmineRu
                         thisRunSettings.testNames == thatRunSettings.testNames
             }
         }
+    }
+
+    override fun isTestRunnerAvailableFor(element: PsiElement): Boolean {
+        return true
     }
 
     override fun setupConfigurationFromCompatibleContext(runConfig: JasmineRunConfiguration, context: ConfigurationContext, sourceElement: Ref<PsiElement>): Boolean {

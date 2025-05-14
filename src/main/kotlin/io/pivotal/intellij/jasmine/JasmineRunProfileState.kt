@@ -3,17 +3,17 @@ package io.pivotal.intellij.jasmine
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.CommandLineState
 import com.intellij.execution.configurations.GeneralCommandLine
+import com.intellij.execution.executors.DefaultDebugExecutor
 import com.intellij.execution.process.KillableColoredProcessHandler
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.execution.runners.ExecutionEnvironment
-import com.intellij.execution.testframework.TestConsoleProperties
 import com.intellij.execution.testframework.sm.SMTestRunnerConnectionUtil
 import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
 import com.intellij.execution.ui.ConsoleView
-import com.intellij.javascript.testFramework.util.JsTestFqn
 import com.intellij.openapi.project.Project
 import com.intellij.util.execution.ParametersListUtil
+import io.pivotal.intellij.jasmine.util.TestNameUtil
 import java.io.File
 import java.nio.file.Paths
 
@@ -35,6 +35,14 @@ class JasmineRunProfileState(
         commandLine.exePath = interpreter.interpreterSystemDependentPath
         runSettings.envData.configureCommandLine(commandLine, true)
 
+        // Add debug options if we're in debug mode
+        val isDebug = executor.id == DefaultDebugExecutor.EXECUTOR_ID
+        if (isDebug) {
+            // Add Node.js debug options - use a fixed port for easier debugging
+            commandLine.addParameter("--inspect-brk=9229")
+        }
+        
+        // Add user-specified node options
         val nodeOptionsList = ParametersListUtil.parse(runSettings.nodeOptions.trim())
         commandLine.addParameters(nodeOptionsList)
 
@@ -54,7 +62,7 @@ class JasmineRunProfileState(
         }
 
         if (runSettings.testNames.isNotEmpty()) {
-            commandLine.addParameter("--filter=${JsTestFqn.getPresentableName(runSettings.testNames)}")
+            commandLine.addParameter("--filter=${TestNameUtil.getPresentableName(runSettings.testNames)}")
         }
 
         val processHandler = KillableColoredProcessHandler(commandLine)
@@ -97,10 +105,10 @@ class JasmineRunProfileState(
 
         init {
             isUsePredefinedMessageFilter = true
-            setIfUndefined(TestConsoleProperties.HIDE_PASSED_TESTS, false)
-            setIfUndefined(TestConsoleProperties.HIDE_IGNORED_TEST, true)
-            setIfUndefined(TestConsoleProperties.SCROLL_TO_SOURCE, true)
-            setIfUndefined(TestConsoleProperties.SELECT_FIRST_DEFECT, true)
+            setIfUndefined(HIDE_PASSED_TESTS, false)
+            setIfUndefined(HIDE_IGNORED_TEST, true)
+            setIfUndefined(SCROLL_TO_SOURCE, true)
+            setIfUndefined(SELECT_FIRST_DEFECT, true)
             isIdBasedTestTree = true
             isPrintTestingStartedTime = false
         }

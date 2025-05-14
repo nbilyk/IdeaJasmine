@@ -50,8 +50,8 @@ class JasmineRunProfileStateTest : BasePlatformTestCase() {
             JasmineRunSettings(scope = JasmineScope.TEST, testNames = testNames)
         )
 
-        assertTrue(suiteCommand.endsWith("\"--filter=App.spec.name with spaces\""))
-        assertTrue(testCommand.endsWith("\"--filter=App.spec.name with spaces\""))
+        assertTrue(suiteCommand.endsWith("\"--filter=App spec name with spaces\""))
+        assertTrue(testCommand.endsWith("\"--filter=App spec name with spaces\""))
     }
 
     fun `test filter not added when empty test names`() {

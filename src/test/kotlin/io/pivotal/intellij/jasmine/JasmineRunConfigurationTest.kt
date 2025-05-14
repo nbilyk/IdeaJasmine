@@ -109,7 +109,7 @@ class JasmineRunConfigurationTest : BasePlatformTestCase() {
             testNames = listOf("top suite", "nested suite")
         )
 
-        assertEquals("top suite.nested suite", subject.suggestedName())
+        assertEquals("top suite nested suite", subject.suggestedName())
     }
 
     fun `test suggested name is full test name for test scope`() {
@@ -118,7 +118,7 @@ class JasmineRunConfigurationTest : BasePlatformTestCase() {
             testNames = listOf("suite name", "test name")
         )
 
-        assertEquals("suite name.test name", subject.suggestedName())
+        assertEquals("suite name test name", subject.suggestedName())
     }
 
     fun `test action name is suite name for suite scope`() {

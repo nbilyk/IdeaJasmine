@@ -8,11 +8,11 @@ import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.javascript.nodejs.debug.NodeDebugRunConfiguration
 import com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreter
 import com.intellij.javascript.nodejs.util.NodePackage
-import com.intellij.javascript.testFramework.util.JsTestFqn
 import com.intellij.openapi.project.Project
 import com.intellij.util.PathUtil
 import io.pivotal.intellij.jasmine.scope.JasmineScope
 import io.pivotal.intellij.jasmine.util.JasmineSerializationUtil
+import io.pivotal.intellij.jasmine.util.TestNameUtil
 import org.jdom.Element
 import java.nio.file.Paths
 import kotlin.io.path.isRegularFile
@@ -70,7 +70,7 @@ class JasmineRunConfiguration(project: Project, factory: ConfigurationFactory, n
     override fun suggestedName(): String? = when (jasmineRunSettings.scope) {
         JasmineScope.ALL -> "All Tests"
         JasmineScope.SPEC_FILE -> PathUtil.getFileName(jasmineRunSettings.specFile)
-        JasmineScope.SUITE, JasmineScope.TEST -> JsTestFqn.getPresentableName(jasmineRunSettings.testNames)
+        JasmineScope.SUITE, JasmineScope.TEST -> TestNameUtil.getPresentableName(jasmineRunSettings.testNames)
     }
 
     override fun getActionName(): String? = when (jasmineRunSettings.scope) {

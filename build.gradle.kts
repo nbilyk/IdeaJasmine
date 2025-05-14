@@ -25,10 +25,9 @@ kotlin {
 
 dependencies {
     intellijPlatform {
-        webstorm("2023.3")
-        bundledPlugins("JavaScript")
+        webstorm("2025.1")
+        bundledPlugins("JavaScript", "JavaScriptDebugger")
         testFramework(TestFrameworkType.Platform)
-
     }
 
     testImplementation("org.hamcrest:hamcrest:2.2")

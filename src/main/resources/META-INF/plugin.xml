@@ -5,12 +5,17 @@
   <vendor email="jasmine-js@googlegroups.com" url="http://jasmine.github.io">Jasmine</vendor>
 
   <depends>JavaScript</depends>
+  <depends>com.intellij.modules.lang</depends>
+  <depends>com.intellij.modules.json</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <configurationType implementation="io.pivotal.intellij.jasmine.JasmineConfigurationType"/>
     <programRunner implementation="io.pivotal.intellij.jasmine.JasmineRunProgramRunner"/>
+    <programRunner implementation="io.pivotal.intellij.jasmine.JasmineDebugProgramRunner"/>
     <runConfigurationProducer implementation="io.pivotal.intellij.jasmine.JasmineRunConfigurationProducer"/>
     <iconProvider implementation="io.pivotal.intellij.jasmine.JasmineConfigIconProvider"/>
+
+    <runLineMarkerContributor language="JavaScript" implementationClass="io.pivotal.intellij.jasmine.JasmineRunLineMarkerContributor"/>
     <notificationGroup id="Jasmine Plugin" displayType="BALLOON"/>
   </extensions>
 </idea-plugin>
